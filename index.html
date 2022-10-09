@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+<meta charset="UTF-8">
+
+    <!--Page Title-->
+<title>Angebot</title>
+
+    <!--Meta Keywords and Description-->
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
+    <link href="css/angebot.css" rel="stylesheet" type="text/css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@700&display=swap" rel="stylesheet">
+
+  
+
+
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <script src="vendor/jquery/jquery.min.js"></script>
+   <script src="js/main.js"></script>
+
+    </head>
+    
+<body>
+    
+<section-calculation>
+  
+  
+    <Blockquote>
+      <form>
+        <label for="Vorname" class="required">Vorname</label>
+        <input type="text" id="vorname"  name="vorname" required autofocus  />
+        <br>
+        <label for="Nachname" class="required">Nachname</label>
+        <input type="text" id="nachname" name="nachname" required autofocus  />
+        <br>
+        <label for="Firma">Firma</label>
+        <input type="text" id="firma" name="firma" />
+        <br>
+        <label for="Email" class="required">Email</label>
+        <input type="text" id="email" name="email" autofocus required />
+
+
+
+        </form>
+        <br>
+        <div class="form-group custom-date-wrapper">
+          <label class="" for="register.dob">Projektstart<span class="skip"></span> </label>
+          <input type="text" id="projektstart" name="Projektstart" class="custom-date form-control" pattern="\d{1,2}/\d{1,2}/\d{4}" type="tel" value="" maxlength="10" placeholder="dd/mm/yyyy" inputmode="numeric" />
+          <div class="floating-label"> </div>
+        </div>
+        
+        </div>
+        <br>
+        <div class="form-group custom-date-wrapper">
+          <label class="" for="register.dob">Projektende<span class="skip"></span> </label>
+          <input type="text" id="projektende" name="Projektende" class="custom-date form-control" pattern="\d{1,2}/\d{1,2}/\d{4}" type="tel" value="" maxlength="10" placeholder="dd/mm/yyyy" inputmode="numeric" />
+          <div class="floating-label"> </div>
+        </div>
+        </div>
+
+
+        <script>
+        const isNumericKeyValue = (e) => {
+          var key = e.which || e.keyCode; // http://keycode.info/
+          // alert(e.keyIdentifier)
+          if(!e.shiftKey && !e.altKey && !e.ctrlKey && key >= 65 && key <= 90 || key === 16 ||
+            // spacebar
+            key === 32 || key === 93 ||
+            // SPECIAL Character
+            key >= 186 && key <= 222 ||
+            // SHIFT and/or SPACE
+            e.shiftKey && key === 32 ||
+            // CAPS A to Z
+            e.shiftKey && key >= 65 && key <= 90 ||
+            // SPECIAL Character
+            e.shiftKey && key >= 48 && key <= 57 ||
+            // Identified specical character for iPhone device
+            e.key === "*" || e.key === "#") {
+            e.preventDefault(e);
+            return false;
+          }
+          if(!e.shiftKey && !e.altKey && !e.ctrlKey &&
+            // numbers
+            key >= 48 && key <= 57 ||
+            // Numeric keypad
+            key >= 96 && key <= 105 ||
+            // allow: Ctrl+A
+            (e.keyCode == 65 && e.ctrlKey === true) ||
+            // allow: Ctrl+C
+            (key == 67 && e.ctrlKey === true) ||
+            // Allow: Ctrl+X
+            (key == 88 && e.ctrlKey === true) ||
+            // allow: home, end, left, right
+            (key >= 35 && key <= 39) ||
+            // Backspace and Tab and Enter
+            key == 8 || key == 9 || key == 13 ||
+            // Del and Ins
+            key == 46 || key == 45) {
+            return true;
+          }
+        };
+        // CUSTOMISE DATE FIELD CLASS
+        customDate = {
+          // Global declaration
+          default: {
+            DD_MIN: '01',
+            DD_MAX: '31',
+            MM_MIN: '01',
+            MM_MAX: '12',
+            SEPARATOR: '/'
+          },
+          // DATE
+          getDate: (v) => (v.length === 2) ? v + customDate.default.SEPARATOR : v,
+          // MONTH
+          getMonth: (v) => (v.substr(3).length === 2) ? v.substr(3) + customDate.default.SEPARATOR : v.substr(3),
+          // YEAR
+          getYear: (v) => v.substr(6),
+          // FORMATTED DATE
+          formattedDate: function(date, format) {
+            if(date !== null) {
+              const day = date.split('-')[2],
+                month = date.split('-')[1],
+                year = date.split('-')[0];
+              if(format === 'dd/mm/yyyy' || date.split('-').length > 1) {
+                return day + '/' + month + '/' + year;
+              }
+            }
+            return date;
+          },
+          //FULL DATE
+          getFullDate: function(v) {
+            const _vi = v.indexOf('/'),
+              _cd = customDate;
+            if(_vi == -1) {
+              v = _cd.getDate(v);
+            } else if(_vi == 2) {
+              v = v.substr(0, 3) + _cd.getMonth(v);
+            } else {
+              v = v.substr(0, 6) + _cd.getYear(v);
+            }
+            return v;
+          },
+          initialise: function() {
+            const customDateFields = document.querySelectorAll('.custom-date-wrapper');
+            customDateFields.forEach(function(itemWrapper) {
+              const item = itemWrapper.querySelector('input'),
+                labelEle = itemWrapper.querySelector('.floating-label');
+              if(item.value !== '') labelEle.classList.add('hide');
+              // KEYDOWN
+              item.addEventListener("keydown", function(e) {
+                if(isNumericKeyValue(e)) {
+                  const v = this.value;
+                  if(v) {
+                    if(e.keyCode === 8) return false;
+                    this.value = customDate.getFullDate(v);
+                  }
+                }
+              });
+              //KEYUP
+              item.addEventListener("keyup", function(e) {
+                const v = this.value;
+                (v === '') ? labelEle.classList.remove('label-hide'): labelEle.classList.add('label-hide'); // jshint ignore:line
+                if(v === '' || v.length === 10) item.classList.remove('form_field_error');
+                if(e.keyCode === 8) return false;
+                this.value = customDate.getFullDate(v);
+              });
+              //BLUR
+              item.addEventListener("blur", function(e) {
+                const v = this.value;
+                (v !== '' && v.length < 10) ? item.classList.add('form_field_error'): item.classList.remove('form_field_error'); // jshint ignore:line
+              });
+            });
+          }
+        };
+        customDate.initialise();
+        </script>
+
+
+        <br>
+        <div class="form">
+          <div class="massage">
+            <label for="user_massage">Massage:</label>
+            <div>
+              <textarea name="nachricht" id="nachricht" cols="30" rows="8"> </textarea>
+            </div>
+          </div>
+        </div>
+
+        <br>
+      
+        <section class="upload-file">
+         <div class="files hidden" data-files></div>
+          <form class="form" enctype="multipart/formdata">
+            <div class="dropzone" data-dropzone>
+              <div class="dropzone__field">
+                <div class="browse"><i class="fa fa-files-o"  aria-hidden="true"></i> 
+                 
+                <h6> Drag and Drop Files
+                <br> here </h6> </div> 
+
+                   
+                <label class="dropzone__label" for="files" data-dropzone-label>Browse</label>
+                <input class="dropzone__file" id="files" name="files" type="file" multiple data-dropzone-file>
+                
+              </div> </div>
+              <div class="infoline4"> Hinweis: Hier ist der Nettopreis enthalten. </div>
+
+            </div>
+            </form>
+            
+
+          <div class="infoline3"> Hier stehen noch einmal rechtliche Informationen: Hinweis Datenschutz: Abbildungen einer nartürlichen Person gehören ebenfalls zu deren personenbezogenen bzw. personenbeziehbaren Daten. Deshalb gelten für deren automatisierte Nutzung, Verarbeitung und Speicherung die Bestimmungen der geltenden Datenschutzgesetze.</div>
+          </section>
+              
+              <script>function isDragAndDropSupported() {
+                return typeof document.createElement('div').ondrop != 'undefined';
+              }
+              
+              function isFormDataSupported() {
+                return typeof FormData == 'function';
+              }
+              
+              function isFileApiSupported() {
+                const input = document.createElement('input');
+                input.type = 'file';
+                
+                return typeof input.files != 'undefined';
+              }
+              
+              if(isDragAndDropSupported() && isFormDataSupported() && isFileApiSupported()) {
+                var Dropzone = function(container) {
+                  this.dropzone = container;
+                  this.dropzone.classList.add('dropzone--actual');
+                  this.dropzone.querySelector('[data-dropzone-label]').classList.add('button');
+                  
+                  this.setupDropzone();
+                  this.setupFileInput();
+                  this.setupStatusBox();
+                  this.setupFiles();
+                  this.setupFileRemove();
+                }
+                
+                Dropzone.prototype.setupDropzone = function() {
+                  this.dropzone.addEventListener('dragover', this.onDragOver.bind(this));
+                  this.dropzone.addEventListener('dragleave', this.onDragLeave.bind(this));
+                  this.dropzone.addEventListener('drop', this.onDrop.bind(this));
+                }
+                
+                Dropzone.prototype.onDragOver = function(event) {
+                  event.preventDefault();
+                  this.dropzone.classList.add('dropzone--dragover');
+                }
+                
+                Dropzone.prototype.onDragLeave = function() {
+                  this.dropzone.classList.remove('dropzone--dragover');
+                }
+                
+                Dropzone.prototype.onDrop = function(event) {
+                  event.preventDefault();
+                  this.dropzone.classList.remove('dropzone--dragover');
+                  this.files.classList.remove('hidden');
+                  this.status.innerHTML = 'Uploading files, please wait...';
+                  this.uploadFiles(event.dataTransfer.files);
+                }
+                
+                Dropzone.prototype.setupFileInput = function() {
+                  this.fileInput = document.querySelector('[data-dropzone-file]');
+                  this.fileInput.addEventListener('change', this.onFileChange.bind(this));
+                  this.fileInput.addEventListener('focus', this.onFileFocus.bind(this));
+                  this.fileInput.addEventListener('blur', this.onFileBlur.bind(this));
+                }
+                
+                Dropzone.prototype.onFileChange = function(event) {
+                  this.files.classList.remove('hidden');
+                  this.status.innerHTML = 'Uploading files, please wait...';
+                  this.uploadFiles(event.currentTarget.files);
+                }
+                
+                Dropzone.prototype.onFileFocus = function() {
+                  this.dropzone.querySelector('[data-dropzone-label]').classList.add('dropzone__label--focused');
+                }
+                
+                Dropzone.prototype.onFileBlur = function() {
+                  this.dropzone.querySelector('[data-dropzone-label]').classList.remove('dropzone__label--focused');
+                }
+                
+                Dropzone.prototype.setupStatusBox = function() {
+                  this.status = document.createElement('div');
+                  this.status.className = 'visually-hidden';
+                  this.status.setAttribute('role', 'status');
+                  this.status.setAttribute('aria-live', 'polite');
+                  
+                  this.dropzone.appendChild(this.status);
+                }
+                
+                Dropzone.prototype.setupFiles = function() {
+                  this.filesHeading = document.createElement('label');
+                  this.filesHeading.className = 'heading';
+                  this.filesHeading.innerHTML = 'Files';
+                  
+                  this.file = document.createElement('ul');
+                  this.file.className = 'file';
+                  
+                  this.files = document.querySelector('[data-files]');
+                  this.files.appendChild(this.filesHeading);
+                  this.files.appendChild(this.file);
+                }
+                
+                Dropzone.prototype.setupFileRemove = function() {
+                  document.querySelector('[data-files]').addEventListener('click', this.onFileRemoveClick.bind(this));
+                }
+                
+                Dropzone.prototype.onFileRemoveClick = function(event) {
+                  const eventTarget = event.target;
+                  
+                  if(eventTarget.hasAttribute('data-file-remove')) {
+                    const listItem = eventTarget.parentNode;
+                    listItem.parentNode.removeChild(listItem);
+                  }
+                }
+                
+                Dropzone.prototype.getStatusHtml = function(result, isSuccess) {
+                  this.fileName = document.createElement('span');
+                  
+                  this.fileStatus = document.createElement('span');
+                  this.fileStatus.className = 'file__status file__status--error';
+                  this.fileStatus.innerHTML = 'Error';
+              
+                  if(isSuccess) {
+                    this.fileLink = document.createElement('a');
+                    this.fileLink.className = 'anchor';
+                    this.fileLink.setAttribute('href', '#');
+                    this.fileLink.setAttribute('target', '_blank');
+                    this.fileLink.innerHTML = result.name;
+                    
+                    this.fileName = document.createElement('div');
+                    this.fileName.appendChild(this.fileLink);
+                    
+                    this.fileStatus.className = 'file__status file__status--success';
+                    this.fileStatus.innerHTML = 'Success';
+                  } else
+                    this.fileName.innerHTML = result.name;
+                  
+                  this.fileName.className = 'file__name';
+                      
+                  this.fileRemove = document.createElement('button');
+                  this.fileRemove.className = 'file__remove button';
+                  this.fileRemove.setAttribute('type', 'button');
+                  this.fileRemove.setAttribute('data-file-remove', '');
+                  this.fileRemove.innerHTML = 'Remove';
+                  
+                  this.fileItem = document.createElement('li');
+                  this.fileItem.className = 'file__item';
+                  this.fileItem.appendChild(this.fileName);
+                  this.fileItem.appendChild(this.fileStatus);
+                  this.fileItem.appendChild(this.fileRemove);
+                  
+                  return this.fileItem;
+                }
+                
+                Dropzone.prototype.uploadFiles = function(files) {
+                  for(const file of files)
+                    this.uploadFile(file);
+                }
+                
+                Dropzone.prototype.uploadFile = function(file) {
+                  const formData = new FormData();
+                  formData.append('documents', file);
+                  this.file.appendChild(this.getStatusHtml(file, true));
+                }
+              }
+              
+              if(typeof Dropzone != 'undefined')
+                new Dropzone(document.querySelector('[data-dropzone]'));</script>
+              
+              
+              </Blockquote>
+    
+    
+       <Blockquote>
+      <label for="Tehmenschwerpunkt">Projektbeschreibung</label>
+      <input type="text" id="projektbeschreibung" name="projektbeschreibung" />
+      
+      <br>
+
+      <div class="form-select">
+        <div class="label-flex">
+          <label for="meal_preference">Themenschwerpunkt</label></div> 
+          <div class="custom-select" id="themenschwerpunkt" style="width:100%;">
+            <select>
+              <option   value="select">Select:</option>
+              <option   value="audi">Audi</option>
+              <option   value="bmw">BMW</option>
+              <option   value="citroen">Citroen</option>
+            </select>
+          </div>
+          
+          <br>
+        
+        
+          <div class="form-select">
+            <div class="label-flex">
+              <label for="meal_preference">Detailgrad</label>
+            </div>
+            <div class="custom-select" style="width:100%;">
+              <select>
+                <option value="0">Select car:</option>
+                <option value="1">Highpoly</option>
+                <option value="2">Lowpoly</option>
+              </select>
+            </div>
+          <br>
+          <script>
+          var x, i, j, l, ll, selElmnt, a, b, c;
+          /*look for any elements with the class "custom-select":*/
+          x = document.getElementsByClassName("custom-select");
+          l = x.length;
+          for (i = 0; i < l; i++) {
+            selElmnt = x[i].getElementsByTagName("select")[0];
+            ll = selElmnt.length;
+            /*for each element, create a new DIV that will act as the selected item:*/
+            a = document.createElement("DIV");
+            a.setAttribute("class", "select-selected");
+            a.innerHTML = selElmnt.options[selElmnt.selectedIndex].innerHTML;
+            x[i].appendChild(a);
+            /*for each element, create a new DIV that will contain the option list:*/
+            b = document.createElement("DIV");
+            b.setAttribute("class", "select-items select-hide");
+            for (j = 1; j < ll; j++) {
+              /*for each option in the original select element,
+              create a new DIV that will act as an option item:*/
+              c = document.createElement("DIV");
+              c.innerHTML = selElmnt.options[j].innerHTML;
+              c.addEventListener("click", function(e) {
+                  /*when an item is clicked, update the original select box,
+                  and the selected item:*/
+                  var y, i, k, s, h, sl, yl;
+                  s = this.parentNode.parentNode.getElementsByTagName("select")[0];
+                  sl = s.length;
+                  h = this.parentNode.previousSibling;
+                  for (i = 0; i < sl; i++) {
+                    if (s.options[i].innerHTML == this.innerHTML) {
+                      s.selectedIndex = i;
+                      h.innerHTML = this.innerHTML;
+                      y = this.parentNode.getElementsByClassName("same-as-selected");
+                      yl = y.length;
+                      for (k = 0; k < yl; k++) {
+                        y[k].removeAttribute("class");
+                      }
+                      this.setAttribute("class", "same-as-selected");
+                      break;
+                    }
+                  }
+                  h.click();
+              });
+              b.appendChild(c);
+            }
+            x[i].appendChild(b);
+            a.addEventListener("click", function(e) {
+                /*when the select box is clicked, close any other select boxes,
+                and open/close the current select box:*/
+                e.stopPropagation();
+                closeAllSelect(this);
+                this.nextSibling.classList.toggle("select-hide");
+                this.classList.toggle("select-arrow-active");
+              });
+          }
+          function closeAllSelect(elmnt) {
+            /*a function that will close all select boxes in the document,
+            except the current select box:*/
+            var x, y, i, xl, yl, arrNo = [];
+            x = document.getElementsByClassName("select-items");
+            y = document.getElementsByClassName("select-selected");
+            xl = x.length;
+            yl = y.length;
+            for (i = 0; i < yl; i++) {
+              if (elmnt == y[i]) {
+                arrNo.push(i)
+              } else {
+                y[i].classList.remove("select-arrow-active");
+              }
+            }
+            for (i = 0; i < xl; i++) {
+              if (arrNo.indexOf(i)) {
+                x[i].classList.add("select-hide");
+              }
+            }
+          }
+          /*if the user clicks anywhere outside the select box,
+          then close all select boxes:*/
+          document.addEventListener("click", closeAllSelect);
+          </script>
+      </div>
+      
+      <div class="form-radio">
+        <div class="label-flex">
+          <label for="cash2">Postproduktion</label> <a href="#" class="form-link">Payment Detail</a> </div>
+        <div class="infoline">Hier steht ein Infotext</div>
+        <div class="form-radio-group">
+          <div class="form-radio-item">
+            <label>
+              <input type="radio" name="animation"  id= "animation" value="Ja"> <span class="check"></span> Ja</label>
+          </div>
+          <div class="form-radio-item">
+            <label>
+              <input type="radio" name="animation" id= "animation" value="Nein"> <span class="check"></span>Nein</label>
+          </div>
+        </div>
+      </div>
+      <div class="form-radio">
+        <div class="label-flex">
+          <label for="cash3">Daten bereits Vorhanden</label> <a href="#" class="form-link">Payment Detail</a> </div>
+        <div class="infoline">Hier steht ein Infotext</div>
+        <div class="form-radio-group">
+          <div class="form-radio-item">
+            <label>
+              <input type="radio" name="postproduktion" id="postproduktion" value="Ja"> <span class="check"></span>Ja</label>
+          </div>
+          <div class="form-radio-item">
+            <label>
+              <input type="radio" name="postproduktion" id="postproduktion" value="Nein"> <span class="check"></span>Nein</label>
+          </div>
+        </div>
+      </div>
+      <div class="form-radio">
+        <div class="label-flex">
+          <label for="cash4">Medien</label> <a href="#" class="form-link">Payment Detail</a> </div>
+        <div class="infoline">Hier steht ein Infotext</div>
+        <div class="form-radio-group">
+          <div class="form-radio-item">
+            <label>
+              <input type="radio" name="Daten_Vorhanden:" value="Ja"> <span class="check"></span>Ja</label>
+          </div>
+          <div class="form-radio-item">
+            <label>
+              <input type="radio" name="Daten_Vorhanden:" value="Nein"> <span class="check"></span>Nein</label>
+          </div>
+        </div>
+      </div>
+      <div class="form-radio">
+        <div class="label-flex">
+          <label for="cash4">Medien</label> <a href="#" class="form-link">Payment Detail</a> </div>
+        <div class="infoline">Hier steht ein Infotext</div>
+        <div class="form-radio-group">
+          <div class="form-radio-item">
+            <label>
+              <input type="radio" name="Medien:" value="Ja"> <span class="check"></span>Ja</label>
+          </div>
+          <div class="form-radio-item">
+            <label>
+              <input type="radio" name="Medien:" value="Nein"> <span class="check"></span>Nein</label>
+          </div>
+        </div>
+      </div>
+      <br>
+      <div class="form-input">
+        <label>Budget</label>
+        <div class="infoline">Hier steht ein Infotext</div>
+        <div class="slidecontainer">
+          <input type="range" name="Budget:" min="." max="10000" value="0" class="slider" id="myRange"> </div>
+        <div class="Wert">
+          <p> Budget: <strong id="dynamicSet"> </strong> </div>
+        <div class="infoline4"> Hinweis: Hier ist der Nettopreis enthalten. </div>
+
+        
+     
+      <div class="infoline3"> Hier stehen noch einmal rechtliche Informationen: Hinweis Datenschutz: Abbildungen einer nartürlichen Person gehören ebenfalls zu deren personenbezogenen bzw. personenbeziehbaren Daten. Deshalb gelten für deren automatisierte Nutzung, Verarbeitung und Speicherung die Bestimmungen der geltenden Datenschutzgesetze.</div>
+
+      <button class="button" >Submit</button>
+
+    </form>
+    </Blockquote>
+    </section-calculation>
+
+    
+    
+
+
+    <script src="js/main.js"></script>
+
+
+      
+</body>    
+   
+</html>
